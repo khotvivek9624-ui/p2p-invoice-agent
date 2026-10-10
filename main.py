@@ -1,16 +1,19 @@
-pythonfrom fastapi import FastAPI, UploadFile, File
+
+from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import HTMLResponse
-import PyPDF2, io, re
+import PyPDF2, io
 
 app = FastAPI()
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 def home():
-    return "<h2>P2P Agent Live!</h2><a href='/docs'>API Docs pe jao</a>"
+    return {"message": "P2P Agent Live! Go to /docs"}
 
 @app.post("/upload-invoice")
 async def upload_invoice(file: UploadFile = File(...)):
     data = await file.read()
     reader = PyPDF2.PdfReader(io.BytesIO(data))
-    text = "".join([p.extract_text() or "" for p in reader.pages])
+    text = ""
+    for p in reader.pages:
+        text += p.extract_text() or ""
     return {"filename": file.filename, "text_preview": text[:1000]}
