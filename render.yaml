@@ -1,0 +1,6 @@
+services:
+    - type: web
+    name: p2p-invoice-agent
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
