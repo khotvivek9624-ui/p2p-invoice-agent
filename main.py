@@ -42,10 +42,11 @@ async def upload_invoice(file: UploadFile = File(...)):
     # 3. Total Amount - IMPORTANT FIX - Longest keyword first
     total = None
     total_patterns = [
-        r"Total\s*Invoice\s*Value\s*[:\-]?\s*(\d+\.\d+)",
+        r"Total\s*Invoice\s*Value\s*[:\-\s]*(\d+)",
+        r"Total\s*Invoice\s*Value\s*[:\-]?\s*(\d+\.?\d*)",
         r"Grand\s*Total\s*[:\-]?\s*Rs?\.?\s*([\d,]+\.?\d*)",
         r"Total\s*Amount\s*[:\-]?\s*Rs?\.?\s*([\d,]+\.?\d*)",
-        r"Invoice\s*Value\s*[:\-]?\s*(\d+\.\d+)",
+        r"Invoice\s*Value\s*[:\-]?\s*(\d+\.?\d*)",
     ]
     for pat in total_patterns:
         m = re.search(pat, full_text, re.I)
